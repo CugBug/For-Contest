@@ -1,0 +1,8 @@
+/*************2016-1-14    周四***************/
+安装了python2.7和pythonwin
+网址http://www.runoob.com/python/python-basic-syntax.html
+学习完了python的基本语法
+/*************2016-1-16    周六***************/
+安装Eclipse上的python支持插件pypev
+详见http://www.cnblogs.com/halfacre/archive/2012/07/22/2603848.html
+其中python的字体太小，在字体的基本栏里面改

@@ -1,0 +1,90 @@
+/*****2016-1-18    周一***********/
+安装了apktool，apktool需要用命令行进行操作，然后需要放对apk文件的位置
+安装了notepad++的smali代码高亮显示
+alt+t在IDA中搜索string
+ida对dex文件的分析
+对smali文件进行了一些注解，在Activity1.smali里面写了
+内部类作为独立的类会在	[外部类]$[内部类].smali	中
+
+/*****2016-1-19    周二***********/
+I: Loading resource table...
+Exception in thread "main" brut.androlib.AndrolibException: Could not decode ars
+c file
+遇到这种问题在百度上说明是apktool的版本太低了
+
+在官网上下载了最高的版本后发现自己的命令无效了，然后才百度到升级后命令变了
+因为apktool升级到2.0以上时,使用方式已经替换,格式为:apktool d [-s] -f <apkPath> -o <folderPath>参数具体的意思可以直接打apktool回车(windows)查看帮助
+
+至此，可以反编译出MainFest文件了，但是我们的反编译还是报了一些问题
+
+然后继续百度，发现是更新了版本之后需要把一些东西删了，详见下解释：
+更换了最新版apktools之后，还得去把老版本的1.apk删除掉。 win的话是在c:\user\yourname\apktool\framework\  这个目录下！   这个问题 apktool的官网上有提到。稍微注意下更新日志就会看到的。
+
+IDAPro	Ctrl+S打开段选择器	alt+t搜索	Ctrl+t搜索上一个搜索的
+可用于搜索特殊字符以及API
+Exports选项上找到所有方法名	空格得到IDA的流程视图，红色表示不满足的执行路线，绿色反之
+
+IDAPython
+以及恶意样本库http://bbs.pediy.com/archive/index.php?t-172285.html
+
+dex2jar工具的命令	dex2jar.bat    classes.dex
+
+/*****2016-1-20    周三***********/
+Android NDK：Android原生开发套件
+寻寻觅觅找到了AndroidResEdit，这是一个汉化apk的软件，具体不多说，我们可以用里面的工具给ak签名，网上的自己签名的教程比较繁琐，而且我的jdk配置也忘了，所以这里先使用这个玩意来重签名。
+
+建议使用abd尝试能否结束卡住Android的进程
+http://www.cr173.com/html/42993_1.html
+
+/*****2016-1-23    周六***********/
+尝试了使用adb，其中adb的目录在sdk的platform-tools目录下
+adb shell
+ps查看所有进程以及他们的信息
+可以通过PID号关闭进程
+am命令非常强大，可以做许多事情
+这条语句就是结束包名为com.example.apigps的进程
+shell@android:/ $ am force-stop com.example.apigps
+这里还可以使用kill+PID的命令杀掉进程
+am还可以打开指定Activity等
+grep命令等，使用正则表达式筛选需要列出来的进程信息
+
+adb shell top -m 15 -n 1 命令，回车查看手机当前CPU资源的占用情况，往往导致手机假死应用的CPU占用率很高，记下该进程对应的pid（pid是一个数字）。
+
+说了这么多，最后发现还是不能解决Android卡死的问题
+
+/*****2016-1-26    周二***********/
+看到一篇讲smali很好的文章，见链接，简洁明了
+http://blog.csdn.net/chenrunhua/article/details/41250613
+
+/*****2016-1-30    周六***********/
+使用notepad++可以在文件夹中查找匹配字符串，支持正则表达式等形式，不错不错
+
+完美钢琴被去广告
+1、找到MainFest文件，正则表达式找到所有的activity名
+2、发现可疑的类adactivity
+3、在反编译文件夹中搜索adactivity，可以用正则表达式排除loadactivity等
+4、找到不是adactivity类的类中对这个类的使用，那就应该是广告类的使用之处
+5、分析知道这是intent传值，值为activity名，将该值修改，即广告消失
+
+·之前有找到其他的一个地方，使得广告的连接失效，改的是一个if判断语句，将发送下载的广播修改成无论何时都不能发送下载这个广播，也是一种方法，不过这种方法还是会看到广告弹窗，只是点击后不能下载
+
+@最后经由金哲同学的提醒，我发现，在manifest文件里直接删掉广告的activity即可。。。挫败感
+
+用了刷机精灵刷了一下机，省的一开机后就死机，这个软件可以的。enen
+
+尝试了这个网站app的爆破http://bbs.pediy.com/showthread.php?t=207386
+但是找不到应用的口令，发现口令应该是在so库里面的，而我对so库不熟啊，好难
+Android NDK 用C或者C++编辑的代码加入到Java中以供使用，可以看这个网页
+http://www.cnblogs.com/luxiaofeng54/archive/2011/08/14/2137854.html
+对so库的写、用和反编译产生了一点兴趣，但是目前没有时间搞
+
+
+/*****2016-2-19    周五***********/
+application类是生命周期最长的类，Android系统为每一个程序运行时创建一个application对象。
+一般是继承application对象并重写OnCreate方法，在OnCreate方法里面可以判定软件的购买状态等等。
+
+在ApplicationManifest.xml文件中配置自定义的Application：
+<application
+        android:name="CustomApplication">
+</application>
+
