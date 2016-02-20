@@ -88,3 +88,9 @@ application类是生命周期最长的类，Android系统为每一个程序运行时创建一个applicatio
         android:name="CustomApplication">
 </application>
 
+使用logcat查看调试信息时可以设置过滤器
+
+在smali代码中手动注入Log.v来获取相应信息
+
+在DDMS的Devices窗口中选择目标程序，点击工具栏上面的“Start Method Profiling”按钮开启
+Method Profiling。在程序中执行相应操作后再点击“Stop Method Profiling”，这时会弹出TraceView窗口，里面记录着所有执行时被调用的API
