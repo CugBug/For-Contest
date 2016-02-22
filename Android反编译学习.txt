@@ -94,3 +94,7 @@ application类是生命周期最长的类，Android系统为每一个程序运行时创建一个applicatio
 
 在DDMS的Devices窗口中选择目标程序，点击工具栏上面的“Start Method Profiling”按钮开启
 Method Profiling。在程序中执行相应操作后再点击“Stop Method Profiling”，这时会弹出TraceView窗口，里面记录着所有执行时被调用的API
+
+/*****2016-2-22    周一***********/
+恶意APP会在源APP中进行改动，而改动多是在代码内进行改动以达到隐藏的目的，可以从Google市场上面下载APP，包名相同的APP之间进行比对，找到改动的地方。
+
