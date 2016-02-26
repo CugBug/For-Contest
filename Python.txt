@@ -1,8 +1,8 @@
-/*************2016-1-14    ÖÜËÄ***************/
-°²×°ÁËpython2.7ºÍpythonwin
-ÍøÖ·http://www.runoob.com/python/python-basic-syntax.html
-Ñ§Ï°ÍêÁËpythonµÄ»ù±¾Óï·¨
-/*************2016-1-16    ÖÜÁù***************/
-°²×°EclipseÉÏµÄpythonÖ§³Ö²å¼şpypev
-Ïê¼ûhttp://www.cnblogs.com/halfacre/archive/2012/07/22/2603848.html
-ÆäÖĞpythonµÄ×ÖÌåÌ«Ğ¡£¬ÔÚ×ÖÌåµÄ»ù±¾À¸ÀïÃæ¸Ä
+ï»¿/*************2016-1-14    å‘¨å››***************/
+å®‰è£…äº†python2.7å’Œpythonwin
+ç½‘å€http://www.runoob.com/python/python-basic-syntax.html
+å­¦ä¹ å®Œäº†pythonçš„åŸºæœ¬è¯­æ³•
+/*************2016-1-16    å‘¨å…­***************/
+å®‰è£…Eclipseä¸Šçš„pythonæ”¯æŒæ’ä»¶pypev
+è¯¦è§http://www.cnblogs.com/halfacre/archive/2012/07/22/2603848.html
+å…¶ä¸­pythonçš„å­—ä½“å¤ªå°ï¼Œåœ¨å­—ä½“çš„åŸºæœ¬æ é‡Œé¢æ”¹

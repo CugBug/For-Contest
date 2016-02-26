@@ -1,16 +1,16 @@
-/********2016-2-5	����****************/
-Eclipse��СС��ݼ�
+﻿/********2016-2-5	周五****************/
+Eclipse的小小快捷键
 http://blog.csdn.net/chenleixing/article/details/44600587
 
-ͨ������xmlns:"..."����xml�ļ����������Լ��İ�����������ʹ���Լ�����Ĳ�����xml�ļ�����
+通过添加xmlns:"..."来在xml文件里面引用自己的包名，即可以使用自己定义的部件在xml文件里面
 	xmlnamespacce
 
-�ӿڻص������Զ��嶥���ؼ���ʹ�ø�����ϵͳ�Ŀؼ���ʹ�õ�ʱ����д�ӿڵ�onclicklistener
+接口回调，让自定义顶部控件的使用更加像系统的控件：使用的时候重写接口的onclicklistener
 
 http://www.imooc.com/learn/247
-���ķǳ���
+讲的非常好
 
-����ʵ����
+明天实践下
 
-/********2016-2-6	����****************/
-�ı�Android��Ŀ��API�ȼ�����ManiFest�ļ������uers-sdk����ĵȼ��ĵ�����
+/********2016-2-6	周六****************/
+改变Android项目的API等级，将ManiFest文件里面的uers-sdk里面的等级改掉就行
