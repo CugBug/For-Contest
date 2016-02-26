@@ -1,100 +1,232 @@
-/*****2016-1-18    ��һ***********/
-��װ��apktool��apktool��Ҫ�������н��в�����Ȼ����Ҫ�Ŷ�apk�ļ���λ��
-��װ��notepad++��smali���������ʾ
-alt+t��IDA������string
-ida��dex�ļ��ķ���
-��smali�ļ�������һЩע�⣬��Activity1.smali����д��
-�ڲ�����Ϊ�����������	[�ⲿ��]$[�ڲ���].smali	��
+﻿/*****2016-1-18    周一***********/
+安装了apktool，apktool需要用命令行进行操作，然后需要放对apk文件的位置
+安装了notepad++的smali代码高亮显示
+alt+t在IDA中搜索string
+ida对dex文件的分析
+对smali文件进行了一些注解，在Activity1.smali里面写了
+内部类作为独立的类会在	[外部类]$[内部类].smali	中
 
-/*****2016-1-19    �ܶ�***********/
+/*****2016-1-19    周二***********/
 I: Loading resource table...
 Exception in thread "main" brut.androlib.AndrolibException: Could not decode ars
 c file
-�������������ڰٶ���˵����apktool�İ汾̫����
+遇到这种问题在百度上说明是apktool的版本太低了
 
-�ڹ�������������ߵİ汾�����Լ���������Ч�ˣ�Ȼ��Űٶȵ��������������
-��Ϊapktool������2.0����ʱ,ʹ�÷�ʽ�Ѿ��滻,��ʽΪ:apktool d [-s] -f <apkPath> -o <folderPath>�����������˼����ֱ�Ӵ�apktool�س�(windows)�鿴����
+在官网上下载了最高的版本后发现自己的命令无效了，然后才百度到升级后命令变了
+因为apktool升级到2.0以上时,使用方式已经替换,格式为:apktool d [-s] -f <apkPath> -o <folderPath>参数具体的意思可以直接打apktool回车(windows)查看帮助
 
-���ˣ����Է������MainFest�ļ��ˣ��������ǵķ����뻹�Ǳ���һЩ����
+至此，可以反编译出MainFest文件了，但是我们的反编译还是报了一些问题
 
-Ȼ������ٶȣ������Ǹ����˰汾֮����Ҫ��һЩ����ɾ�ˣ�����½��ͣ�
-���������°�apktools֮�󣬻���ȥ���ϰ汾��1.apkɾ������ win�Ļ�����c:\user\yourname\apktool\framework\  ���Ŀ¼�£�   ������� apktool�Ĺ��������ᵽ����΢ע���¸�����־�ͻῴ���ġ�
+然后继续百度，发现是更新了版本之后需要把一些东西删了，详见下解释：
+更换了最新版apktools之后，还得去把老版本的1.apk删除掉。 win的话是在c:\user\yourname\apktool\framework\  这个目录下！   这个问题 apktool的官网上有提到。稍微注意下更新日志就会看到的。
 
-IDAPro	Ctrl+S�򿪶�ѡ����	alt+t����	Ctrl+t������һ��������
-���������������ַ��Լ�API
-Exportsѡ�����ҵ����з�����	�ո�õ�IDA��������ͼ����ɫ��ʾ�������ִ��·�ߣ���ɫ��֮
+IDAPro	Ctrl+S打开段选择器	alt+t搜索	Ctrl+t搜索上一个搜索的
+可用于搜索特殊字符以及API
+Exports选项上找到所有方法名	空格得到IDA的流程视图，红色表示不满足的执行路线，绿色反之
 
 IDAPython
-�Լ�����������http://bbs.pediy.com/archive/index.php?t-172285.html
+以及恶意样本库http://bbs.pediy.com/archive/index.php?t-172285.html
 
-dex2jar���ߵ�����	dex2jar.bat    classes.dex
+dex2jar工具的命令	dex2jar.bat    classes.dex
 
-/*****2016-1-20    ����***********/
-Android NDK��Androidԭ�������׼�
-ѰѰ�����ҵ���AndroidResEdit������һ������apk�����������岻��˵�����ǿ���������Ĺ��߸�akǩ�������ϵ��Լ�ǩ���Ľ̳̱ȽϷ����������ҵ�jdk����Ҳ���ˣ�����������ʹ�������������ǩ����
+/*****2016-1-20    周三***********/
+Android NDK：Android原生开发套件
+寻寻觅觅找到了AndroidResEdit，这是一个汉化apk的软件，具体不多说，我们可以用里面的工具给ak签名，网上的自己签名的教程比较繁琐，而且我的jdk配置也忘了，所以这里先使用这个玩意来重签名。
 
-����ʹ��abd�����ܷ������סAndroid�Ľ���
+建议使用abd尝试能否结束卡住Android的进程
 http://www.cr173.com/html/42993_1.html
 
-/*****2016-1-23    ����***********/
-������ʹ��adb������adb��Ŀ¼��sdk��platform-toolsĿ¼��
+/*****2016-1-23    周六***********/
+尝试了使用adb，其中adb的目录在sdk的platform-tools目录下
 adb shell
-ps�鿴���н����Լ����ǵ���Ϣ
-����ͨ��PID�Źرս���
-am����ǳ�ǿ�󣬿�������������
-���������ǽ�������Ϊcom.example.apigps�Ľ���
+ps查看所有进程以及他们的信息
+可以通过PID号关闭进程
+am命令非常强大，可以做许多事情
+这条语句就是结束包名为com.example.apigps的进程
 shell@android:/ $ am force-stop com.example.apigps
-���ﻹ����ʹ��kill+PID������ɱ������
-am�����Դ�ָ��Activity��
-grep����ȣ�ʹ���������ʽɸѡ��Ҫ�г����Ľ�����Ϣ
+这里还可以使用kill+PID的命令杀掉进程
+am还可以打开指定Activity等
+grep命令等，使用正则表达式筛选需要列出来的进程信息
 
-adb shell top -m 15 -n 1 ����س��鿴�ֻ���ǰCPU��Դ��ռ����������������ֻ�����Ӧ�õ�CPUռ���ʺܸߣ����¸ý��̶�Ӧ��pid��pid��һ�����֣���
+adb shell top -m 15 -n 1 命令，回车查看手机当前CPU资源的占用情况，往往导致手机假死应用的CPU占用率很高，记下该进程对应的pid（pid是一个数字）。
 
-˵����ô�࣬����ֻ��ǲ��ܽ��Android����������
+说了这么多，最后发现还是不能解决Android卡死的问题
 
-/*****2016-1-26    �ܶ�***********/
-����һƪ��smali�ܺõ����£������ӣ��������
+/*****2016-1-26    周二***********/
+看到一篇讲smali很好的文章，见链接，简洁明了
 http://blog.csdn.net/chenrunhua/article/details/41250613
 
-/*****2016-1-30    ����***********/
-ʹ��notepad++�������ļ����в���ƥ���ַ�����֧���������ʽ����ʽ����������
+/*****2016-1-30    周六***********/
+使用notepad++可以在文件夹中查找匹配字符串，支持正则表达式等形式，不错不错
 
-�������ٱ�ȥ���
-1���ҵ�MainFest�ļ����������ʽ�ҵ����е�activity��
-2�����ֿ��ɵ���adactivity
-3���ڷ������ļ���������adactivity���������������ʽ�ų�loadactivity��
-4���ҵ�����adactivity������ж�������ʹ�ã��Ǿ�Ӧ���ǹ�����ʹ��֮��
-5������֪������intent��ֵ��ֵΪactivity��������ֵ�޸ģ��������ʧ
+完美钢琴被去广告
+1、找到MainFest文件，正则表达式找到所有的activity名
+2、发现可疑的类adactivity
+3、在反编译文件夹中搜索adactivity，可以用正则表达式排除loadactivity等
+4、找到不是adactivity类的类中对这个类的使用，那就应该是广告类的使用之处
+5、分析知道这是intent传值，值为activity名，将该值修改，即广告消失
 
-��֮ǰ���ҵ�������һ���ط���ʹ�ù�������ʧЧ���ĵ���һ��if�ж���䣬���������صĹ㲥�޸ĳ����ۺ�ʱ�����ܷ�����������㲥��Ҳ��һ�ַ������������ַ������ǻῴ����浯����ֻ�ǵ����������
+·之前有找到其他的一个地方，使得广告的连接失效，改的是一个if判断语句，将发送下载的广播修改成无论何时都不能发送下载这个广播，也是一种方法，不过这种方法还是会看到广告弹窗，只是点击后不能下载
 
-@����ɽ���ͬѧ�����ѣ��ҷ��֣���manifest�ļ���ֱ��ɾ������activity���ɡ�������ܸ�
+@最后经由金哲同学的提醒，我发现，在manifest文件里直接删掉广告的activity即可。。。挫败感
 
-����ˢ������ˢ��һ�»���ʡ��һ�����������������������Եġ�enen
+用了刷机精灵刷了一下机，省的一开机后就死机，这个软件可以的。enen
 
-�����������վapp�ı���http://bbs.pediy.com/showthread.php?t=207386
-�����Ҳ���Ӧ�õĿ�����ֿ���Ӧ������so������ģ����Ҷ�so�ⲻ�찡������
-Android NDK ��C����C++�༭�Ĵ�����뵽Java���Թ�ʹ�ã����Կ������ҳ
+尝试了这个网站app的爆破http://bbs.pediy.com/showthread.php?t=207386
+但是找不到应用的口令，发现口令应该是在so库里面的，而我对so库不熟啊，好难
+Android NDK 用C或者C++编辑的代码加入到Java中以供使用，可以看这个网页
 http://www.cnblogs.com/luxiaofeng54/archive/2011/08/14/2137854.html
-��so���д���úͷ����������һ����Ȥ������Ŀǰû��ʱ���
+对so库的写、用和反编译产生了一点兴趣，但是目前没有时间搞
 
 
-/*****2016-2-19    ����***********/
-application����������������࣬AndroidϵͳΪÿһ����������ʱ����һ��application����
-һ���Ǽ̳�application������дOnCreate��������OnCreate������������ж������Ĺ���״̬�ȵȡ�
+/*****2016-2-19    周五***********/
+application类是生命周期最长的类，Android系统为每一个程序运行时创建一个application对象。
+一般是继承application对象并重写OnCreate方法，在OnCreate方法里面可以判定软件的购买状态等等。
 
-��ApplicationManifest.xml�ļ��������Զ����Application��
+在ApplicationManifest.xml文件中配置自定义的Application：
 <application
         android:name="CustomApplication">
 </application>
 
-ʹ��logcat�鿴������Ϣʱ�������ù�����
+使用logcat查看调试信息时可以设置过滤器
 
-��smali�������ֶ�ע��Log.v����ȡ��Ӧ��Ϣ
+在smali代码中手动注入Log.v来获取相应信息
 
-��DDMS��Devices������ѡ��Ŀ����򣬵������������ġ�Start Method Profiling����ť����
-Method Profiling���ڳ�����ִ����Ӧ�������ٵ����Stop Method Profiling������ʱ�ᵯ��TraceView���ڣ������¼������ִ��ʱ�����õ�API
+在DDMS的Devices窗口中选择目标程序，点击工具栏上面的“Start Method Profiling”按钮开启
+Method Profiling。在程序中执行相应操作后再点击“Stop Method Profiling”，这时会弹出TraceView窗口，里面记录着所有执行时被调用的API
 
-/*****2016-2-22    ��һ***********/
-����APP����ԴAPP�н��иĶ������Ķ������ڴ����ڽ��иĶ��Դﵽ���ص�Ŀ�ģ����Դ�Google�г���������APP��������ͬ��APP֮����бȶԣ��ҵ��Ķ��ĵط���
+/*****2016-2-22    周一***********/
+恶意APP会在源APP中进行改动，而改动多是在代码内进行改动以达到隐藏的目的，可以从Google市场上面下载APP，包名相同的APP之间进行比对，找到改动的地方。
 
+恶意代码多在Service中进行，因为这不需要交互，而且很隐藏。
+所以，我特意去了解了一下Service。
+http://blog.csdn.net/pi9nc/article/details/18764415
+它的启动也是Intent启动，如同activity的使用一样。
+
+如何销毁Service
+在Service的基本用法这一部分，我们介绍了销毁Service最简单的一种情况，点击Start Service按钮启动Service，再点击Stop Service按钮停止Service，这样MyService就被销毁了。
+
+Android的后台就是指，它的运行是完全不依赖UI的。即使Activity被销毁，或者程序被关闭，只要进程还在，Service就可以继续运行。比如说一些应用程序，始终需要与服务器之间始终保持着心跳连接，就可以使用Service来实现。你可能又会问，前面不是刚刚验证过Service是运行在主线程里的么？在这里一直执行着心跳连接，难道就不会阻塞主线程的运行吗？当然会，但是我们可以在Service中再创建一个子线程，然后在这里去处理耗时逻辑就没问题了。
+
+但是Service的系统优先级还是比较低的，当系统出现内存不足情况时，就有可能会回收掉正在后台运行的Service。如果你希望Service可以一直保持运行状态，而不会由于系统内存不足的原因导致被回收，就可以考虑使用前台Service。
+
+为什么将MyService转换成远程Service后就不会导致程序ANR了呢？这是由于，使用了远程Service后，MyService已经在另外一个进程当中运行了，所以只会阻塞该进程中的主线程，并不会影响到当前的应用程序。
+将一个普通的Service转换成远程Service其实非常简单，只需要在注册Service的时候将它的android:process属性指定成:remote就可以了
+但是这个不太好用，因为这样就和原进程不是一个进程了，所以要bind的话就需要借助其他的方式进行，原来直接bind会导致崩溃
+
+/*****2016-2-23    周二***********/
+
+读了《基于静态分析的安卓重新打包程序检测方法研究》这篇论文，提取出以下的内容：
+
+androguard工具的尝试使用
+
+现在有三个特征可供检测，由易到难：
+1、对AndroidManifest.xml文件的检测
+2、对存放数字签名的META_INF文件夹的检测
+3、对基于Dalvik可执行文件的相似度检测
+
+一、两个应用权限的相似度得分
+二、比对两个应用的数字签名
+三、Dalvik可执行文件的相似度检验方法
+
+基于以上三点得到该应用程序被重打包的得分
+
+看一下Android apk的签名的知识
+
+1、 生成MANIFEST.MF文件：
+程序遍历apk包中的所有文件(entry)，对非文件夹非签名文件的文件，逐个生成SHA1的数字签名信息，再用Base64进行编码。将生成的签名写入MANIFEST.MF文件。
+你不能仅通过这个摘要信息复原原来的信息。另外，它保证不同信息的摘要信息彼此不同。因此，如果你改变了apk包中的文件，那么在apk安装校验时，改变后的文件摘要信息与MANIFEST.MF的检验信息不同，于是程序就不能成功安装。
+
+2、 生成CERT.SF文件：
+对前一步生成的Manifest，使用SHA1-RSA算法，用私钥进行签名。
+RSA是一种非对称加密算法。用私钥通过RSA算法对摘要信息进行加密。在安装时只能使用公钥才能解密它。解密之后，将它与未加密的摘要信息进行对比，如果相符，则表明内容没有被异常修改。
+
+3、 生成CERT.RSA文件：
+生成MANIFEST.MF没有使用密钥信息，生成CERT.SF文件使用了私钥文件。那么我们可以很容易猜测到，CERT.RSA文件的生成肯定和公钥相关。
+CERT.RSA文件中保存了公钥、所采用的加密算法等信息。
+
+综上所示：
+1、 Android签名机制其实是对APK包完整性和发布机构唯一性的一种校验机制。
+2、 Android签名机制不能阻止APK包被修改，但修改后的再签名无法与原先的签名保持一致。（拥有私钥的情况除外）。
+3、 APK包加密的公钥就打包在APK包内，且不同的私钥对应不同的公钥。换句话言之，不同的私钥签名的APK公钥也必不相同。所以我们可以根据公钥的对比，来判断私钥是否一致。
+
+
+绕过签名校验机制的讲解：
+大致三种：
+	1、smali代码的修改绕过，这种比较简单。
+	2、在so库里面对签名校验，这种要使用到ida进行定位并修改
+	3、网络端的校验，截取数据包并对比并修改即可
+
+得到了一个叫做getsign的软件，得到apk的签名信息，还行吧，还是要尝试使用keytool。
+
+百度了半天配置的，并没有什么卵用。主要是我无法在一般目录下用javac这些命令，这导致我用java一点也不酷。现在我想使用keytool，所以把keytool工具所在的目录放到了path目录下，OK了。
+
+现在，我们会使用keytool工具。主要的命令如下
+keytool -printcert -file META-INF/*.RSA或*.DSA
+这个是解包之后可以使用的命令
+
+keytool -list -printcert -jarfile xxxx.apk
+这个是不用解包直接对apk进行的命令。测试时发现可将-list省略。
+
+与峰哥沟通后发现可以用aapt以树形查看xml文件，从中得到service。恩恩，沟通使人进步
+aapt d xmltree filepath/..apk xmlname
+/*****2016-2-24    周三***********/
+
+用python写好了用正则表达式提取service
+道路曲折，比较坑爹。
+主要是我对python的熟练度不够
+加入了一些提示的输出之后终于找到了bug所在，现在可以通过aapt输出xml的形式直接提取service
+
+看了一下receiver，自己写了一个使用它的。
+可以发和收广播。这是非常大的进步，掌握了又一大片江山。
+完成了一个开机自启的软件的编写。
+
+这个其实也比较简单，只是编写的时候把自己的类放错了包，以至于排了好久的错。
+还有自己的手机会自动的停止进程而不是卡死不动了。
+明天可以掌握以下service
+
+/*****2016-2-25    周四***********/
+了解到一个算法来计算两个序列之间的相似度NCD（Normalized Compression Distance）
+1、给定两个序列x，y
+2、假设相连接后的序列是S
+3、使用压缩算法Comp
+4、序列压缩后的长度是L(Comp（s）)
+5、x，y之间的距离是:		
+	L(Comp(S))- min{L(Comp(x)),L(Comp(y))}
+	--------------------------------------
+		max{L(Comp(x)),L(Comp(y))}
+********2.26号发现这是要用到Comp算法的，之前做过的Haffman压缩算法在这里行不通
+
+
+现在想把Manifest里面的其他一些东西提取出来，放在一个文件夹下
+现在实现了把一个文件夹下的所有.apk文件的信息提取出来放在一个文件夹里面
+
+晚上要求提取出app内的字符串，我类个去，这是有多难。
+在桌面的r文件夹下放着一个aaa.bat是用来得到这个文件夹下的所有xml的字符串的，但是还是没有string.xml中的字符串
+aapt是有个提取字符串的东西，但是。。。
+我们用压缩软件打开apk，发现里面有文件夹和文件，aapt所能够提取的字符串是在那里面的xml文件,所以我们需要找到strings.xml编译后到了哪里去。
+
+看到了老罗的文章，http://1025250620.iteye.com/blog/1974214
+里面长篇累牍的介绍了Android资源文件的编译和打包过程
+暂时没怎么看懂，先mark
+
+发现一个叫自解压的东东，把自己的东西做的像安装软件一样
+
+/*****2016-2-26    周五***********/
+不知道如何获取strings.xml里面的string串，也许这个被编译进去了，无法不解包就看到
+
+现在想了解一下如何获取API调用序列，峰哥做的是用apktool反编译找smali代码来获取
+看到了一个叫做packagemanager的东西，是个Android的服务类。可以管理应用程序包。
+
+下载了一个Demo，通过上面的东西在Android端获取已经安装的应用的信息。
+放到桌面Android里面的AndroidPackageDemo.7z
+
+有个Android版本的拓词APP	http://bbs.kafan.cn/thread-1814099-1-1.html
+这个他们说是恶意APP，然后我下载下来看了下
+
+发现，在AndroidManifest.xml里面注册过的activity并没有在反编译之后看到，不知道是为什么，想在虚拟机里面跑一下试试
+
+在网上找了正则表达式匹配URL，然后在反编译得到的文件夹下查找，发现有好多的.png.jpg里面包含了URL，我只是想匹配恶意网址，发现只找到了这些图片里面的貌似是adobe网址
+
+*************
+然后发现恶意URL并不会光明正大的让你找到，通过字符串连接就可以避开正则表达式的查找！！！
