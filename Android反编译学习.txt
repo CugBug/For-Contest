@@ -220,13 +220,101 @@ aapt是有个提取字符串的东西，但是。。。
 
 下载了一个Demo，通过上面的东西在Android端获取已经安装的应用的信息。
 放到桌面Android里面的AndroidPackageDemo.7z
+实验了一下这个demo，发现它可以列出安装在系统中的应用
+我发现了一些应用程序并不在桌面上显示，但是它的确在系统中存在的。
 
 有个Android版本的拓词APP	http://bbs.kafan.cn/thread-1814099-1-1.html
 这个他们说是恶意APP，然后我下载下来看了下
 
 发现，在AndroidManifest.xml里面注册过的activity并没有在反编译之后看到，不知道是为什么，想在虚拟机里面跑一下试试
+发现了这个应用在虚拟机里面并不能跑起来
 
 在网上找了正则表达式匹配URL，然后在反编译得到的文件夹下查找，发现有好多的.png.jpg里面包含了URL，我只是想匹配恶意网址，发现只找到了这些图片里面的貌似是adobe网址
 
 *************
 然后发现恶意URL并不会光明正大的让你找到，通过字符串连接就可以避开正则表达式的查找！！！
+
+下了一个Notepad++的主题
+/*****2016-2-27    周六***********/
+
+把apkfactory里面的所有.bat和.py的全部都放到github上面了
+并且，当在github上面预览是乱码时候，可以改变本地的编码方式，然后就解决了乱码的问题
+
+编写了akptool版的获取activity等信息，存储到apk的名字的文件夹下
+获取.RSA的时候需要注意这个文件并不一定是CERT.RSA，例如360的证书就是QIHU.RSA
+********
+发现我们在批处理里面使用过cd命令之后，path里面设置的环境变量就无效了。
+今天在编写keytool获取.RSA时遇到的问题，cd进了一个目录后就无法使用keytool了
+
+IndentationError: unexpected indent
+python这个错误就是格式没有对好
+
+python里面的正则表达式可以让.匹配包括换行符，加入re.S例子：
+getstr = re.findall(r'<string.*?>(.*?)</string>',s_all,re.S)
+
+*********
+在去除掉了cd的命令之后我可以正常用call命令而不是start命令
+运行apktool时候只弹出一个框
+cd命令有毒啊	0,0
+
+jadx，和dex2-jar差不多的一个工具
+
+CN(CommonName)表示名字与姓氏，OU(OrganizationUnit)表示组织单位名
+称)，O(Organization)表示组织名称，L(Locality)表示城市或区域名称，ST(State表示
+州或省份名称，C(Country)表示国家名称。
+
+看了一篇论文：Android恶意软件检测关键技术研究
+里面讲的检测资源文件分析非常好，让我弄明白了一些：：4.2.3	关于MagicNumber
+
+/*****2016-2-28    周日***********/
+看完了上面的论文，现在有几个方面可以做
+1、完整爬虫的编写与测试，创建样本库
+2、提取smali代码的API调用序列，并作图
+3、相似度算法的研究与编写实践
+4、重打包检测
+
+
+发现要导入别的包的时候需要在java中import包，这样就可以使用别人的包了，那么是不是只有这一种方法使用呢？
+如果是这样的话，我们就需要用得到其他java文件里面导入包的信息，这是非常重要的信息。
+
+/*****2016-2-29    周一***********/
+
+jadx的帮助，尝试翻译了一下。
+ -d, --output-dir           - output directory
+ -j, --threads-count        - processing threads count
+ -f, --fallback             - make simple dump (using goto instead of 'if', 'for', etc)
+ -r, --no-res               - do not decode resources
+ -s, --no-src               - do not decompile source code
+     --show-bad-code        - show inconsistent code (incorrectly decompiled)			//展现不一致的源码（错误的反编译）
+     --cfg                  - save methods control flow graph to dot file				//保存方法调用图到dot文件
+     --raw-cfg              - save methods control flow graph (use raw instructions)	//用原始指令
+ -v, --verbose              - verbose output
+     --deobf                - activate deobfuscation									//解混淆？
+     --deobf-min            - min length of name										//名字长度最小
+     --deobf-max            - max length of name
+     --deobf-rewrite-cfg    - force to save deobfuscation map							//保存解混淆dot？
+     --deobf-use-sourcename - use source file name as class name alias
+ -h, --help                 - print this help
+ 
+ Graphviz工具依靠.dot文件生成.png图片的命令：看了一下，jadx的.dot的图片比较坑
+ dot my.dot -Tpng -o mmy.png
+ 
+ 下了个smali-cfgs，在论文里面看到的，往github上面一搜就搜到了，全python写的，然后用不来。。。那么它的了解就暂时告一段落了。
+ 
+ 现在的情况：
+ 1、smali代码提取太困难了，我想通过生成的java代码来提取。
+ 2、关键是API的提取，其实可以忽略所有其他的函数，现在先做所有的函数的提取吧。
+ 3、略过混淆的类？
+ 4、每个类做一个图？还是要把图关联
+ 5、先提取到一个文本文档里面吧
+
+ /*****2016-3-1    周二***********/
+ 尝试编写invoke.py来提取类的API调用
+ 现在的问题是：
+	1、关于调用顺序还存有问题
+	2、若API不在Android和java的包下则需要把他们的路径进行解析，变成其父类的路径才好
+	3、以上都是那篇论文里面提到的方法，现在可以先做API提取，不管那些
+	
+return关键字：	结束method
+" :"关键字：	跳转标记
+需要看看python的数据结构，以此对代码块进行操作
