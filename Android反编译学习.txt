@@ -324,3 +324,16 @@ return关键字：	结束method
 尝试导出.dot文件
 switch分支结构需要处理
 排序了字典之后返回的由元组tuple组成的列表list，我的数据结构太复杂了不利于处理
+
+/*****2016-3-3    周四***********/
+通过exec来使字符串当做变量名
+>>> s='abc'
+>>> exec(s+'=5')
+>>> abc
+5
+实际上exec就是执行语句的代码，详见下：
+http://blog.csdn.net/caimouse/article/details/41521079
+懵逼了，在exec()函数里面都有格式限制，比如exec(' m = 1')就错了，因为m前面有空格= =
+
+exec获取变量的值还有问题
+需要处理switch的流程问题
