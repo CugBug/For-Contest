@@ -345,3 +345,12 @@ goto以及if语法流程完成，需要解决switch语法结构
 能够标记出哪些分支是哪个switch的分支，放在一个以switch名字命名的列表里面
 掌握一些百度的搜索语法是很有必要的
 需要知道如何将本地的集料库放到github的网上
+
+/*****2016-3-8    周二***********/
+坑爹啊，又发现了一种跳转的，try-catch命令，我真是，真是欲哭无泪
+
+try-catch的特点是，从try_start_0/1/2...开始，到try_end_0/1/2...结束try块
+而catch块从.catch/.catchall最后面的 :catch_0开始，对于finally的处理是直接复制了三份，所以没有finally块
+详见网址：http://www.52pojie.cn/thread-270315-1-1.html
+
+快要写完try-catch的语法解析了，但是发现字符串替换的地方出了问题，会变成30,38啥的，需要处理
