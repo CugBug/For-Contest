@@ -106,7 +106,8 @@ http://blog.csdn.net/pi9nc/article/details/18764415
 如何销毁Service
 在Service的基本用法这一部分，我们介绍了销毁Service最简单的一种情况，点击Start Service按钮启动Service，再点击Stop Service按钮停止Service，这样MyService就被销毁了。
 
-Android的后台就是指，它的运行是完全不依赖UI的。即使Activity被销毁，或者程序被关闭，只要进程还在，Service就可以继续运行。比如说一些应用程序，始终需要与服务器之间始终保持着心跳连接，就可以使用Service来实现。你可能又会问，前面不是刚刚验证过Service是运行在主线程里的么？在这里一直执行着心跳连接，难道就不会阻塞主线程的运行吗？当然会，但是我们可以在Service中再创建一个子线程，然后在这里去处理耗时逻辑就没问题了。
+Android的后台就是指，它的运行是完全不依赖UI的。即使Activity被销毁，或者程序被关闭，只要进程还在，Service就可以继续运行。
+比如说一些应用程序，始终需要与服务器之间始终保持着心跳连接，就可以使用Service来实现。你可能又会问，前面不是刚刚验证过Service是运行在主线程里的么？在这里一直执行着心跳连接，难道就不会阻塞主线程的运行吗？当然会，但是我们可以在Service中再创建一个子线程，然后在这里去处理耗时逻辑就没问题了。
 
 但是Service的系统优先级还是比较低的，当系统出现内存不足情况时，就有可能会回收掉正在后台运行的Service。如果你希望Service可以一直保持运行状态，而不会由于系统内存不足的原因导致被回收，就可以考虑使用前台Service。
 
@@ -354,3 +355,39 @@ try-catch的特点是，从try_start_0/1/2...开始，到try_end_0/1/2...结束t
 详见网址：http://www.52pojie.cn/thread-270315-1-1.html
 
 快要写完try-catch的语法解析了，但是发现字符串替换的地方出了问题，会变成30,38啥的，需要处理
+
+/*****2016-3-15    周二***********/
+看了下mysql数据库的问题，主要是mysql的root密码忘了，通过在my.ini文件里面添加一句话，让mysql的root密码没了？！
+在my.ini  中的mysqld下面加入一行skip-grant-tables进入mysql
+看看http://blog.csdn.net/ku360517703/article/details/49684809
+因为我是mysql5.7所以新版的mysql数据库下的user表中已经没有Password字段了，所以更改密码需要这样改
+改好的mysql的密码是123456，汗
+
+好久之前装的mysql，现在配置都忘了
+mysql还没有配置环境变量，然后net start命令可以查看有哪些是开着的。net start/stop mysql 打开或关闭mysql
+mysql安装在D盘的一个目录下
+
+安装了gnuplot
+
+/*****2016-3-16    周三***********/
+mysql数据库教程http://www.cnblogs.com/mr-wid/archive/2013/05/09/3068229.html#c3
+
+show databases查看有哪些数据库
+create database 数据库名 [其他选项];
+create table 表名称(列声明);
+
+创建表,source 路径以及文件名
+或者mysql -D mrbs -u root -p < d:\\tables.my.sql     //d:\\tables.my.sql为要导入的sql文件及所在目录。
+这是没有切换到库下面的时候使用的命令
+
+MySQL Workbench有点意思
+
+python下的mysql驱动安装，详见以下网页：
+https://segmentfault.com/a/1190000004143122
+http://www.cnblogs.com/fnng/p/3565912.html
+
+学习一些数据库的相关知识以及思想：
+sql：结构化查询语言、Structured Query Language
+看看这个：
+http://wenku.baidu.com/link?url=LF71yTwcGSZIRdWMCz2ZWYOscd3hzqbIdE0ny5j5faf3uQ5chAIv51K2QiCIPiFFvVyu7rPBgN_9uDA2ckEHrslvq8tF0S6uY3SdWyEVO3y
+
