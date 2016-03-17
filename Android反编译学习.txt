@@ -391,3 +391,16 @@ sql：结构化查询语言、Structured Query Language
 看看这个：
 http://wenku.baidu.com/link?url=LF71yTwcGSZIRdWMCz2ZWYOscd3hzqbIdE0ny5j5faf3uQ5chAIv51K2QiCIPiFFvVyu7rPBgN_9uDA2ckEHrslvq8tF0S6uY3SdWyEVO3y
 
+/*****2016-3-17    周四***********/
+数据库中的冗余数据需要额外的维护，所以一个好的数据库应该尽量减少冗余的数据
+数据库中经常发生变化的数据需要额外的维护，因此好的表要避免数据经常发生变化
+
+学习SQL数据库语法 'SELECT','DISTINCT','WHERE','AND&OR','ORDER BY','INSERT INTO','UPDATE','DELETE'
+
+SELECT column_name,column_name
+FROM table_name;
+
+
+
+卧槽不知道怎么回事要将元素插入表时一直出现什么格式错误 OK了，INFO，INTO傻傻分不清
+
