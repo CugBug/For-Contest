@@ -404,3 +404,92 @@ FROM table_name;
 
 卧槽不知道怎么回事要将元素插入表时一直出现什么格式错误 OK了，INFO，INTO傻傻分不清
 
+/*****2016-3-19    周六***********/
+讲SQL外键比较好：
+http://www.2cto.com/database/201406/310213.html
+讲SQL数据类型比较好：
+http://www.w3school.com.cn/sql/sql_datatypes.asp
+=====================================
+BLOB		0-65,535字节(64K)		二进制形式的长文本数据
+TEXT		0-65,535字节(64K)		长文本数据
+MEDIUMBLOB	0-16,777,215字节(16M)	二进制形式的中等长度文本数据
+MEDIUMTEXT	0-16,777,215字节(16M)	中等长度文本数据
+LOGNGBLOB	0-4,294,967,295字节(4G)	二进制形式的极大文本数据
+LONGTEXT	0-4,294,967,295字节(4G)	极大文本数据
+=====================================
+通配符			描述
+%				替代一个或多个字符
+_				仅替代一个字符
+[charlist]		字符列中的任何单一字符
+
+[^charlist]
+或者			不在字符列中的任何单一字符
+[!charlist]
+=====================================
+改变列的属性：alter table 表名 modify 列名 新的数据类型
+=====================================
+AUTO_INCREMENT自动增长
+
+++++++++++++++++++++++++++++++++++++++
+反射机制学习，这样也许就能提取API的路径和方法名：
+本文利用Java的反射机制从一个名叫Android．jar的文件里来获得每个API函数的描述。
+对于每个API函数，提取方法名和路径。对于一个完整路径的方法，本文使用一个十六进制
+的唯一数字来表示。在Android的SDK4．1中，本文总共提取了47126个完整的方法路径【8】。
+表4．3描述了部分方法路径编码。例如利用十六进制数0x2c22来表示
+android／telephony／SmsManager；->sendTextMessage。
+++++++++++++++++++++++++++++++++++++++
+看这个我写的demo，得到了Stringbuffer的所有方法信息
+import java.lang.reflect.Method;
+public class StrBuf{
+	public static void main(String args[]){
+		StringBuffer sb = new StringBuffer("This is a StringBuffer");
+		Class myClass = sb.getClass();
+		Method[] myMethods = myClass.getDeclaredMethods();
+		for (int i=0;i<myMethods.length;i++){
+			System.out.println(myMethods[i]);
+		}
+	}
+}
+具体参考网址，写的不错：
+http://407827531.iteye.com/blog/1308702
+http://blog.csdn.net/yongjian1092/article/details/7364451         ////////////没看完
+
+官方帮助：https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html
+下载了说明一个文档，不知道好用否。
+
+
+实践发现，我们可以从一个类里面通过反射机制提取出method类，并且使用method类的方法获取该类的方法并且生成它的32位hash值。
+我想，这就可以将所有的API导入进一个数据库里面了。可以通过hash值作为索引。
+
+/*****2016-3-20    周日***********/
+开机自启批处理的方法：
+http://blog.csdn.net/zhouyong0/article/details/6323586
+
+获取java的jar包的信息，百度到别人写的获取方法：http://www.tuicool.com/articles/y2eqem
+随后发现有第三方开源库叫 apache commons 提供类方法来获取：http://www.tuicool.com/articles/iyEbquE
+以及官方页面：
+http://commons.apache.org/proper/commons-beanutils/
+http://commons.apache.org/proper/commons-beanutils/download_beanutils.cgi
+
+
+/*****2016-3-22    周二***********/
+讲jar包的读取网址：http://blog.sina.com.cn/s/blog_4ba5666e0101bz0q.html
+
+	首先，通过把将JAR文件位置传给构造函数创建一个JarFile的实例，位置可能是String或File的形式，如下： JarFile jarFile = new JarFile("thefile.jar");
+	或者：
+	File file = new File("thefile.jar");
+	JarFile jarFile = new JarFile(file);
+	当你有了该JAR文件的一个引用之后，你就可以读取其文件内容中的目录信息了。JarFile的entries方法返回所有entries的枚举集合(Enumeration)。通过每一个entry，你可以从它的manifest文件得到它的属性，任何认证信息，以及其他任何该entry的信息，如它的名字或者大小等。
+	Enumeration enum = jarFile.entries();
+	while (enum.hasMoreElements()) {
+	process(enum.nextElement());
+	}
+	正如前面提到的，每一个entry是一个JarEntry。该类有getName，getSize，getCompressedSize等方法。
+	
+可以从Jar包中提取其中所有类的API：
+	1、通过创建上述的JarFile实例，然后从中得到所有的class。
+	2、通过java的反射机制从class类名得到该类下的method以及该method的hash值，而且重载函数的hash值是相同的。注意要将jar包添加进项目。
+	
+学习java的jdbc操作mysql数据库：随便找到一个网址：http://www.cnblogs.com/longwu/articles/2310577.html
+将jar包添加到classpath下
+将下载到D盘的jar包添加到项目里面即可使用
